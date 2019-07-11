@@ -1,0 +1,17 @@
+"pk","run_id","algorithm","size","mean_time_taken"
+19,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN","S",0.00108
+20,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN + Cluster Centres","S",0.0012
+15,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN","M",0.0013
+16,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN + Cluster Centres","M",0.00147
+11,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN","L",0.0024
+12,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN + Cluster Centres","L",0.00286
+7,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN","XL",0.00311
+8,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","DBSCAN + Cluster Centres","XL",0.00368
+22,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","KMeans","S",0.03236
+18,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","KMeans","M",0.03725
+14,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","KMeans","L",0.06914
+10,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","KMeans","XL",0.0806
+21,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","MeanShift","S",0.13886
+17,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","MeanShift","M",0.24238
+13,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","MeanShift","L",0.51321
+9,"5a9cf6da-1c34-4d2f-9423-6726e40b8d11","MeanShift","XL",0.80898
