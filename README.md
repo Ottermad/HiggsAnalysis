@@ -311,3 +311,5 @@ Some rows are not imported if their click_x or click_y entries are blank
 
 ### Summary
 Mean Shift and DBSCAN produce similar results but DBSCAN is noticeably faster.
+
+## Finding an EPS value
