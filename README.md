@@ -308,3 +308,6 @@ Some rows are not imported if their click_x or click_y entries are blank
 | AHH0000o3y    | XY         | MeanShift | 9                  | 8                           | 345.48001                    | 205.00000  |
 | AHH0000o3y    | XY         | MeanShift | 9                  | 8                           | 346.74688                    | 200.00000  |
 | AHH0000o3y    | XY         | MeanShift | 8                  | 8                           | 354.72775                    | 195.00000  |
+
+### Summary
+Mean Shift and DBSCAN produce similar results but DBSCAN is noticeably faster.
