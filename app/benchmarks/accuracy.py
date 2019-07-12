@@ -1,5 +1,4 @@
 """Benchmark clustering algorithms."""
-import uuid
 from scipy.optimize import linear_sum_assignment
 from .dbscan import dbscan_and_cluster_centres
 from .meanshift import meanshift_and_cluster_centres
@@ -53,9 +52,8 @@ epses = range(5, 50, 5)
 bandwidths = range(10, 300, 5)
 
 
-def accuracy_benchmark():
+def accuracy_benchmark(run_id):
     """Benchmark Accuracy."""
-    run_id = uuid.uuid4()
     for image in accuracy_data:
         query = NonSimulatedImageClick.select().where(
             (NonSimulatedImageClick.zooniverse_id == image['zoo_id']) &
@@ -64,58 +62,68 @@ def accuracy_benchmark():
         coords = get_coords_tuple(query)
 
         for eps in epses:
-            n_clusters, centres = dbscan_and_cluster_centres(eps, coords)
-            mean_distance = centre_accuracy(
-                centres, image['manual_clusters'])
-            score = AccuracyBenchmarkScore(
-                run_id=run_id,
-                zooniverse_id=image['zoo_id'],
-                projection=image['projection'],
-                algorithm='DBSCAN',
-                number_of_clusters=n_clusters,
-                expected_number_of_clusters=len(image['manual_clusters']),
-                mean_distances_from_clusters=mean_distance,
-                parameters=eps
-            )
-            score.save()
+            dbscan_benchmark(run_id, image, coords, eps)
 
         for bandwidth in bandwidths:
-            n_clusters, centres = meanshift_and_cluster_centres(
-                bandwidth, coords
-            )
-            mean_distance = centre_accuracy(
-                centres.tolist(), image['manual_clusters']
-            )
-            score = AccuracyBenchmarkScore(
-                run_id=run_id,
-                zooniverse_id=image['zoo_id'],
-                projection=image['projection'],
-                algorithm='MeanShift',
-                number_of_clusters=n_clusters,
-                expected_number_of_clusters=len(image['manual_clusters']),
-                mean_distances_from_clusters=mean_distance,
-                parameters=bandwidth
-            )
-            score.save()
+            meanshift_benchmark(run_id, image, coords, bandwidth)
 
-        kmeans_centres = kmeans_cluster_centres(
-            len(image['manual_clusters']), coords
-        )
-        mean_distance = centre_accuracy(
-            kmeans_centres.tolist(), image['manual_clusters']
-        )
-        score = AccuracyBenchmarkScore(
-            run_id=run_id,
-            zooniverse_id=image['zoo_id'],
-            projection=image['projection'],
-            algorithm='KMeans',
-            number_of_clusters=len(image['manual_clusters']),
-            expected_number_of_clusters=len(image['manual_clusters']),
-            mean_distances_from_clusters=mean_distance,
-        )
-        score.save()
+        kmeans_benchmark(run_id, image, coords)
 
-    print("DONE with run id: {}".format(run_id))
+
+def dbscan_benchmark(run_id, image, coords, eps):
+    n_clusters, centres = dbscan_and_cluster_centres(eps, coords)
+    mean_distance = centre_accuracy(
+        centres, image['manual_clusters'])
+    score = AccuracyBenchmarkScore(
+        run_id=run_id,
+        zooniverse_id=image['zoo_id'],
+        projection=image['projection'],
+        algorithm='DBSCAN',
+        number_of_clusters=n_clusters,
+        expected_number_of_clusters=len(image['manual_clusters']),
+        mean_distances_from_clusters=mean_distance,
+        parameters=eps
+    )
+    score.save()
+
+
+def meanshift_benchmark(run_id, image, coords, bandwidth):
+    n_clusters, centres = meanshift_and_cluster_centres(
+        bandwidth, coords
+    )
+    mean_distance = centre_accuracy(
+        centres.tolist(), image['manual_clusters']
+    )
+    score = AccuracyBenchmarkScore(
+        run_id=run_id,
+        zooniverse_id=image['zoo_id'],
+        projection=image['projection'],
+        algorithm='MeanShift',
+        number_of_clusters=n_clusters,
+        expected_number_of_clusters=len(image['manual_clusters']),
+        mean_distances_from_clusters=mean_distance,
+        parameters=bandwidth
+    )
+    score.save()
+
+
+def kmeans_benchmark(run_id, image, coords):
+    kmeans_centres = kmeans_cluster_centres(
+        len(image['manual_clusters']), coords
+    )
+    mean_distance = centre_accuracy(
+        kmeans_centres.tolist(), image['manual_clusters']
+    )
+    score = AccuracyBenchmarkScore(
+        run_id=run_id,
+        zooniverse_id=image['zoo_id'],
+        projection=image['projection'],
+        algorithm='KMeans',
+        number_of_clusters=len(image['manual_clusters']),
+        expected_number_of_clusters=len(image['manual_clusters']),
+        mean_distances_from_clusters=mean_distance,
+    )
+    score.save()
 
 
 def centre_accuracy(algorithm_centres, manual_centres):

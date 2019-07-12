@@ -10,9 +10,11 @@ from peewee import (
     DecimalField,
     PostgresqlDatabase
 )
+from playhouse.dataset import DataSet
 from .constants import DATABASE_NAME, PORT
 
 db = PostgresqlDatabase(DATABASE_NAME, port=PORT)
+data_set = DataSet("postgresql://postgres:my_password@localhost:5433/higgs2_db")
 
 
 class SimulatedImageClick(Model):
