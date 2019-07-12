@@ -68,6 +68,7 @@ def accuracy_benchmark(run_id):
             meanshift_benchmark(run_id, image, coords, bandwidth)
 
         kmeans_benchmark(run_id, image, coords)
+    print("Done with Run Id: {}".format(run_id))
 
 
 def dbscan_benchmark(run_id, image, coords, eps):
