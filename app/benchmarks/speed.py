@@ -38,9 +38,8 @@ algorithms = [
 ]
 
 
-def speed_benchmark():
+def speed_benchmark(run_id):
     """Speed Benchmark."""
-    run_id = uuid.uuid4()
     for image_set in image_sets:
         # Get coords
         total_coords = []
