@@ -8,10 +8,33 @@
 * Run `pip install -r requirements.txt`
 * Import data by running `python3 import_simulated.py` and `python3 import_non_simulated.py`
 
+
+## Introduction 
+Since the discovery of the Higgs Boson, there has been interest in exploring its
+implications for physics outside the Standard Model. To this the end the Higgs
+Hunter’s project was established on the Zooniverse platform in order to enable
+data from CERN to be analysed by members of the public. This is to make use
+of the human brain’s extraordinary ability to recognise unusual patterns which
+may be indicators of undiscovered particles. The aim of my research is to analyse the responses from the public in order to look for undiscovered particles
+making use of computer based analysis techniques in order to deal with the
+large volumes of data.
+
 ## Data Imports
 Some rows are not imported if their click_x or click_y entries are blank
+If the .csv files have been opened in Excel then 05-10 can get changed to 05-Oct so the imports also account for this.
 
-## Benchmarks
+## Problem Statement
+Using the dataset, I want to identify image that are likely to contain evidence of unusual decays of the Higgs Boson.
+
+## General Methodology
+For each simulated click figured out distance from nearest decay position and store in the results in data base (TBL_SIMULATED_USER_ACCURACY). Then for each user who made at least one click on the simulated data calculate the mean distance their clicks are from the true decay position.
+
+Next, select all the users whose mean distance is under a threshold and has made a sufficient number of clicks on simulated data, these can be considered accurate users. For each image calculate the percentage of clicks made by accurate users. For images with a high percentage of clicks made by accurate users look for clusters of clicks. The positions of these cluster centres should be interesting points to look at, hopefully, indicating an exotic decay.
+
+## Selecting a clustering algorithm
+In order to look for the clusters of clicks I will need a clustering algorithm. Popular options include DBSCAN, MeanShift and K Means Clustering. In order to select an algorithm I ran several benchmarks. The cavet is that the DBSCAN algorithm does not produce a cluster centre so I also benchmarked the overhead of having to do this manually. 
+
+To benchmark the accuracy of the algorithm I looked at two criteria: the difference in the number of clusters found manually compared to the number of clusters produced by the algorithm; and the mean distance the clusters from the algorithm are away from the manually found clusters (using [the Hungarian Method](https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.optimize.linear_sum_assignment.html)]
 
 ### Speed Benchmarks
 | Algorithm                | Size | Mean Time Taken |
@@ -313,3 +336,4 @@ Some rows are not imported if their click_x or click_y entries are blank
 Mean Shift and DBSCAN produce similar results but DBSCAN is noticeably faster.
 
 ## Finding an EPS value
+Having chosen to use DBSCAN the next challenge is to obtain a value for the EPS parameter of the algorithm. 
